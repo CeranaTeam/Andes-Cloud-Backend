@@ -24,10 +24,10 @@ jobs:
           sudo npm install -g firebase-tools
         
       - name: Build
-        run: cd funcs && npm install
+        run: cd functions && npm install
 
       - name: Firebase Deploy
         run: |
           sudo npm install -g firebase-tools
-          firebase deploy --token ${{ secrets.FIREBASE_TOKEN }} --only functions:dev
+          firebase deploy --token ${{ secrets.FIREBASE_TOKEN }} --only functions:functions:dev
 
