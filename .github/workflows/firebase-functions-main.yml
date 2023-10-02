@@ -1,0 +1,33 @@
+name: CD
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  prod-deploy:
+      name: Deploy Functions in Develop Environment
+      runs-on: ubuntu-latest
+      container: node:16.14.2
+
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v2 
+
+      - name: check node version
+        run: node -v
+
+      - name: install tools
+        run: |
+          apt-get update && apt-get install sudo
+          sudo npm install -g firebase-tools
+        
+      - name: Build
+        run: cd funcs && npm install
+
+      - name: Firebase Deploy
+        run: |
+          sudo npm install -g firebase-tools
+          firebase deploy --token ${{ secrets.FIREBASE_TOKEN }} --only functions:api
+

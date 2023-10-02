@@ -19,6 +19,7 @@ const upload = multer({storage: storage});
 
 const app = express();
 
+
 app.use(express.static("public"));
 
 app.post("/upload", upload.single("photo"), (req, res) => {

@@ -1,10 +1,6 @@
 {
   "functions": [
     {
-      "source": "functions",
-      "codebase": "default"
-    },
-    {
       "source": "funcs",
       "codebase": "funcs",
       "ignore": [
