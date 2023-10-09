@@ -33,6 +33,8 @@ class AdminController {
       const adminId = decodedClaims.uid;
       const addTrashCanDTO: AddTrashCanDTO = req.body;
       // todo: if any col is undefined, throw error
+      addTrashCanDTO.base64Image = addTrashCanDTO.base64Image.replace(/^data:image\/\w+;base64,/, "");
+
       await this.adminService.addTrashCan(addTrashCanDTO, adminId);
       res.status(200).json(new SuccessResponseData("成功新增垃圾桶", true));
     } catch (error: any) {

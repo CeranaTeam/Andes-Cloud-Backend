@@ -5,6 +5,7 @@ import {AddTrashCanDTO, AdminRegisterDTO} from "../dtos/Admin.dto";
 import {AdminNotFoundError} from "../errors/Admin.error";
 import {TrashCanNotFoundError} from "../errors/TrashCan.error";
 import {Admin} from "../models/Admin.model";
+import {TrashCan} from "../models/TrashCan.model";
 
 /* eslint-disable */
 export default class AdminService {
@@ -32,14 +33,20 @@ export default class AdminService {
     if (adminData === null) {
       throw new AdminNotFoundError("not registered yet");
     }
-    const trashCanData = await this.trashCanDAO.getTrashCanByName(addTrashCanDto.name);
-    if (trashCanData === null) {
+    const trashCanData = await this.trashCanDAO.getTrashCanByName(addTrashCanDto.trashCanName);
+    if (trashCanData !== null) {
       throw new TrashCanNotFoundError("trash can already exists");
     }
     // upload img to storage
-    this.storageDAO.uploadImage(trashCanData.id, addTrashCanDto.base64Image);
+    const imageUrl = await this.storageDAO.uploadImage(addTrashCanDto.base64Image, addTrashCanDto.imageName);
+    const trashCan: TrashCan = {
+      name: addTrashCanDto.trashCanName,
+      location: addTrashCanDto.location,
+      imageUrl: imageUrl,
+      adminId: adminId,
+    }
     // add trash can to db
-    await this.trashCanDAO.register(trashCanData);
+    await this.trashCanDAO.register(trashCan);
 
     return true;
   }

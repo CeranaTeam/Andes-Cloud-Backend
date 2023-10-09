@@ -6,9 +6,10 @@ type AdminRegisterDTO = {
 }
 
 type AddTrashCanDTO = {
-  readonly name: string;
+  readonly trashCanName: string;
   readonly location: string;
-  readonly base64Image: string;
+  base64Image: string;
+  readonly imageName: string;
 }
 
 

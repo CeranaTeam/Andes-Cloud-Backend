@@ -15,5 +15,5 @@ const adminController = new AdminController(adminService);
 // ------- dependency injection -------
 
 router.post("/register", adminController.register);
-router.post("trash_can", adminController.addTrashCan);
+router.post("/trash_can", adminController.addTrashCan);
 export default router;
