@@ -28,5 +28,8 @@ module.exports = {
     "quotes": ["error", "double"],
     "import/no-unresolved": 0,
     "indent": ["error", 2],
+    "max-len": 0, // Disable the max-len rule
+    "@typescript-eslint/no-explicit-any": "off",
+    "require-jsdoc": "off",
   },
 };
