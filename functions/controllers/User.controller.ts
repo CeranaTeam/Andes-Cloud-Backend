@@ -18,8 +18,8 @@ class UserController {
     try {
       const decodedClaims = req.body.decodedClaims;
       const userRegisterDTO: UserRegisterDTO = decodedClaims;
-      const userId = await this.userService.register(userRegisterDTO);
-      res.status(200).json(new SuccessResponseData("成功註冊", userId));
+      await this.userService.register(userRegisterDTO);
+      res.status(200).json(new SuccessResponseData("成功註冊", userRegisterDTO.uid));
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
       res.status(status).json({ success: false, error: error.message });

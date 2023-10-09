@@ -6,7 +6,7 @@ export interface UserDAO {
   register(user: User): Promise<boolean>;
   getCurrentPoint(id: string): Promise<number>;
   increasePoint(id: string, point: number): Promise<number>;
-  getUser(id: string): Promise<User | null>;
+  getUserById(id: string): Promise<User | null>;
 }
 
 export class FirebaseUserDAO implements UserDAO {
@@ -16,7 +16,7 @@ export class FirebaseUserDAO implements UserDAO {
     this.db = FirebaseService.getInstance().getDb();
   }
 
-  public async getUser(id: string): Promise<User | null> {
+  public async getUserById(id: string): Promise<User | null> {
     const userRef = await this.db.collection("user")
       .where("uid", "==", id)
       .limit(1)
@@ -30,7 +30,7 @@ export class FirebaseUserDAO implements UserDAO {
   }
 
   public async register(user: User): Promise<boolean> {
-    const userData = await this.getUser(user.uid);
+    const userData = await this.getUserById(user.uid);
     if (userData !== null) {
       throw new UserAlreadyExistsError("User already exists");
     }

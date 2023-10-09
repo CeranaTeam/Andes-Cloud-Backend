@@ -18,7 +18,7 @@ export const errorStatusMap = {
   [UserNotFoundError.name]: 404,
   [UserAlreadyExistsError.name]: 409,
   [NoMoreImageToCollectError.name]: 404,
-  [UnauthorizedError.name]: 401,
+  [UnauthorizedError.name]: 403,
   [ImageNotFoundError.name]: 404,
   [ImageAlreadyLabelledError.name]: 409,
   [ImageFormatError.name]: 400,

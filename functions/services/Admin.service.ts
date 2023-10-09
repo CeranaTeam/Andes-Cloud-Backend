@@ -1,33 +1,29 @@
+import {AdminDAO} from "../daos/Admin.dao";
+import {AdminRegisterDTO} from "../dtos/Admin.dto";
+import {Admin} from "../models/Admin.model";
+import {adminRegisterDtoToAdminModel} from "../transformers/admin.transformer";
+
 /* eslint-disable */
-class AdminService {
-  constructor() {
+export default class AdminService {
+  private adminDAO: AdminDAO;
 
+  constructor(adminDAO: AdminDAO) {
+    this.adminDAO = adminDAO;
   }
 
-  /**
-   * register
-   */
-  public register() {
-
+  public register(adminRegisterDTO: AdminRegisterDTO) {
+    const admin: Admin = adminRegisterDtoToAdminModel(adminRegisterDTO);
+    return this.adminDAO.register(admin);
   }
 
-  /**
-   * register_trash_can
-   */
   public register_trash_can() {
 
   }
 
-  /**
-   * get_trash_can_list
-   */
   public get_trash_can_list() {
 
   }
 
-  /**
-   * get_img_info_list
-   */
   public get_img_info_list(trash_can_id: string) {
 
   }
