@@ -1,5 +1,8 @@
 /* eslint-disable */
 import { UserDAO } from "../daos/User.dao";
+import { UserRegisterDTO } from "../dtos/User.dto";
+import { User } from "../models/User.model";
+import { userRegisterDtoToUserModel } from "../transformers/user.transformer";
 class UserService {
   private userDAO: UserDAO;
 
@@ -7,31 +10,21 @@ class UserService {
     this.userDAO = userDAO;
   }
 
-  /**
-   * register
-   */
-  public register() {
 
+  public register(userRegisterDto: UserRegisterDTO) {
+    const user: User = userRegisterDtoToUserModel(userRegisterDto);
+    return this.userDAO.register(user);
   }
 
-  /**
-   * check_current_point
-   */
   public checkCurrentPoint = async (userId: string) => {
     const point = await this.userDAO.getCurrentPoint(userId);
     return point;
   }
 
-  /**
-   * increase_point_by_thorwing
-   */
   public increase_point_by_thorwing() {
     this.increase_point(1);
   }
 
-  /**
-   * increase_point_by_labelling
-   */
   public increase_point_by_labelling() {
     this.increase_point(2);
   }
@@ -40,9 +33,6 @@ class UserService {
 
   }
 
-  /**
-   * get_image_info_list
-   */
   public get_image_info_list() {
 
   }
