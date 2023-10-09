@@ -18,7 +18,6 @@ export default class TrashCanService {
 
   public async detectImage(detectResultDTO: DetectResultDTO, trashCanId: string) {
     const trashCanData = await this.trashCanDAO.getTrashCanById(trashCanId);
-    console.log("%cTrashCan.service.ts line:21 trashCanData", "color: #007acc;", trashCanData);
     if (trashCanData === null) {
       throw new TrashCanNotFoundError("trash can not found");
     }
@@ -30,6 +29,7 @@ export default class TrashCanService {
       isCollected: false,
       trashCanId: trashCanData.id,
       userId: "",
+      createdAt: Date.now(),
     };
     await this.imageDAO.detectImage(image);
     return true;

@@ -6,4 +6,5 @@ export interface Image {
   isCollected: boolean;
   trashCanId?: string;
   userId: string;
+  createdAt?: number;
 }

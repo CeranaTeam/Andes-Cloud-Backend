@@ -13,4 +13,4 @@ setGlobalOptions({region: "asia-east1", maxInstances: 5});
 
 export const api = onRequest(app);
 
-// export const dev = onRequest(app);
+export const dev = onRequest(app);
