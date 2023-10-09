@@ -5,7 +5,7 @@ import {FirebaseService} from "../services/FirebaseStore.service";
 export interface UserDAO {
   register(user: User): Promise<boolean>;
   getCurrentPoint(id: string): Promise<number>;
-  increasePoint(id: string, point: number): Promise<number>;
+  increasePoint(uid: string, point: number): Promise<number>;
   getUserById(id: string): Promise<User | null>;
 }
 
@@ -51,12 +51,17 @@ export class FirebaseUserDAO implements UserDAO {
     return user.point;
   }
 
-  public async increasePoint(id: string, point: number): Promise<number> {
-    const userRef = this.db.collection("user").doc(id);
-    const userDoc = await userRef.get();
+  public async increasePoint(uid: string, point: number): Promise<number> {
+    const userRef = this.db.collection("user").where("uid", "==", uid).limit(1);
+    const userSnapshot = await userRef.get();
+    if (userSnapshot.empty) {
+      throw new UserNotFoundError("User not found");
+    }
+    const userDoc = userSnapshot.docs[0];
+    const userRefToUpdate = userDoc.ref;
     const user = userDoc.data() as User;
     const newPoint = user.point + point;
-    await userRef.update({point: newPoint});
+    await userRefToUpdate.update({point: newPoint});
     return newPoint;
   }
 }

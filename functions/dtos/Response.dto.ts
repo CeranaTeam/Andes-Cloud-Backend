@@ -16,6 +16,15 @@ class SuccessResponseData extends BaseResponseData {
   }
 }
 
+class SuccessPOSTResponseData extends BaseResponseData {
+  public success = true;
+  public data: any;
+
+  constructor(message: string) {
+    super(message);
+  }
+}
+
 class ErrorResponseData extends BaseResponseData {
   public success = false;
   public error: any;
@@ -27,5 +36,6 @@ class ErrorResponseData extends BaseResponseData {
 
 export {
   SuccessResponseData,
+  SuccessPOSTResponseData,
   ErrorResponseData,
 };
