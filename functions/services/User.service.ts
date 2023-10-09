@@ -2,7 +2,6 @@
 import { UserDAO } from "../daos/User.dao";
 import { UserRegisterDTO } from "../dtos/User.dto";
 import { User } from "../models/User.model";
-import { userRegisterDtoToUserModel } from "../transformers/user.transformer";
 class UserService {
   private userDAO: UserDAO;
 
@@ -12,7 +11,12 @@ class UserService {
 
 
   public register(userRegisterDto: UserRegisterDTO) {
-    const user: User = userRegisterDtoToUserModel(userRegisterDto);
+    const user: User = {
+      uid: userRegisterDto.uid,
+      name: userRegisterDto.name,
+      email: userRegisterDto.email,
+      point: 0,
+    }
     return this.userDAO.register(user);
   }
 
