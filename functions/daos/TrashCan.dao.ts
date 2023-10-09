@@ -5,6 +5,7 @@ import {FirebaseService} from "../services/FirebaseStore.service";
 export interface TrashCanDAO {
   register(trashCan: TrashCan): Promise<boolean>;
   getTrashCanByName(trashCanId: string): Promise<TrashCan | null>;
+  getTrashCanById(trashCanId: string): Promise<TrashCan | null>;
 }
 
 export class FirebaseTrashCanDAO implements TrashCanDAO {
@@ -33,6 +34,19 @@ export class FirebaseTrashCanDAO implements TrashCanDAO {
     }
     const trashCanDoc = trashCanRef.docs[0];
     const trashCan = trashCanDoc.data() as TrashCan;
+    return trashCan;
+  }
+
+  public async getTrashCanById(trashCanId: string): Promise<TrashCan | null> {
+    const trashCanRef = await this.db.collection("trash_can").doc(trashCanId).get();
+    if (!trashCanRef.exists) {
+      return null;
+    }
+    const trashCanDoc = trashCanRef.data();
+    const trashCan = {
+      ...trashCanDoc,
+      id: trashCanId,
+    } as TrashCan;
     return trashCan;
   }
 }

@@ -15,6 +15,9 @@ export class FirebaseAdminDAO implements AdminDAO {
   }
 
   public async register(admin: Admin): Promise<boolean> {
+    if (admin.id === undefined) {
+      throw new Error("admin id is undefined");
+    }
     const adminData = await this.getAdminById(admin.id);
     if (adminData !== null) {
       throw new AdminAlreadyExistsError("Admin already exists");
