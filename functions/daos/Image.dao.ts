@@ -2,11 +2,11 @@ import {Image} from "../models/Image.model";
 import {FirebaseService} from "../services/FirebaseStore.service";
 
 export interface ImageDAO {
-  getImagesByUserId(userId: string): Promise<Array<Image> | null>
-  getImagesByTrashCanId(trashCanId: string): Promise<Array<Image> | null>
+  getImagesByUserId(userId: string): Promise<Array<Image>>
+  getImagesByTrashCanId(trashCanId: string): Promise<Array<Image>>
   getImageById(imageId: string): Promise<Image | null>
-  collectImages(trashCanId: string, userId: string): Promise<Array<Image> | null>
-  getNotCollectedImagesByTrashCanId(trashCanId: string): Promise<Array<Image> | null>
+  collectImages(trashCanId: string, userId: string): Promise<Array<Image>>
+  getNotCollectedImagesByTrashCanId(trashCanId: string): Promise<Array<Image>>
   labelImage(uid: string, imageId: string, label: string): Promise<boolean>;
   detectImage(image: Image): Promise<boolean>;
 }
@@ -18,7 +18,7 @@ class FirebaseImageDAO implements ImageDAO {
     this.db = FirebaseService.getInstance().getDb();
   }
 
-  public async getImagesByUserId(userId: string): Promise<Array<Image> | null> {
+  public async getImagesByUserId(userId: string): Promise<Array<Image>> {
     const imageRef = await this.db.collection("image")
       .where("userId", "==", userId)
       .get();
@@ -34,12 +34,12 @@ class FirebaseImageDAO implements ImageDAO {
     return images;
   }
 
-  public async getImagesByTrashCanId(trashCanId: string): Promise<Array<Image> | null> {
+  public async getImagesByTrashCanId(trashCanId: string): Promise<Array<Image>> {
     const imageRef = await this.db.collection("image")
       .where("trashCanId", "==", trashCanId)
       .get();
     if (imageRef.empty) {
-      return null;
+      return [];
     }
     const imageDocs = imageRef.docs;
     const images = imageDocs.map((imageDoc) => {
@@ -64,13 +64,13 @@ class FirebaseImageDAO implements ImageDAO {
     return image as Image;
   }
 
-  public async collectImages(trashCanId: string, userId: string): Promise<Array<Image> | null> {
+  public async collectImages(trashCanId: string, userId: string): Promise<Array<Image>> {
     const imageRef = await this.db.collection("image")
       .where("trashCanId", "==", trashCanId)
       .where("isCollected", "==", false)
       .get();
     if (imageRef.empty) {
-      return null;
+      return [];
     }
     const imageDocs = imageRef.docs;
     const images = imageDocs.map((imageDoc) => {
@@ -90,13 +90,13 @@ class FirebaseImageDAO implements ImageDAO {
     return images;
   }
 
-  public async getNotCollectedImagesByTrashCanId(trashCanId: string): Promise<Array<Image> | null> {
+  public async getNotCollectedImagesByTrashCanId(trashCanId: string): Promise<Array<Image>> {
     const imageRef = await this.db.collection("image")
       .where("trashCanId", "==", trashCanId)
       .where("isCollected", "==", false)
       .get();
     if (imageRef.empty) {
-      return null;
+      return [];
     }
     const imageDocs = imageRef.docs;
     const images = imageDocs.map((imageDoc) => {

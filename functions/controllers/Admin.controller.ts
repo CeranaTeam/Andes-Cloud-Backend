@@ -43,6 +43,19 @@ class AdminController {
       logger.error(error);
     }
   }
+
+  getTrashCanList = async (req: Request, res: Response) => {
+    try {
+      const decodedClaims = req.body.decodedClaims;
+      const adminId = decodedClaims.uid;
+      const trashCanList = await this.adminService.getTrashCanList(adminId);
+      res.status(200).json(trashCanList);
+    } catch (error: any) {
+      const status = errorStatusMap[error.constructor.name] || 500;
+      res.status(status).json({ success: false, error: error.message });
+      logger.error(error);
+    }
+  }
 }
 
 export { AdminController };

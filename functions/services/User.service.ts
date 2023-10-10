@@ -45,7 +45,7 @@ class UserService {
 
   public async increasePointByThrowing(trashCanId: string, userId: string) {
     const images = await this.imageDAO.collectImages(trashCanId, userId);
-    if (images === null) {
+    if (images.length === 0) {
       throw new ImageNotFoundError("沒有可以增加的點數");
     }
     const amount = images.length;

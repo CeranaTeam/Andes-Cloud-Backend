@@ -16,4 +16,5 @@ const adminController = new AdminController(adminService);
 
 router.post("/register", adminController.register);
 router.post("/trash_can", adminController.addTrashCan);
+router.get("/trash_can/list", adminController.getTrashCanList);
 export default router;

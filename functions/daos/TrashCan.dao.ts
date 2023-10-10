@@ -6,6 +6,7 @@ export interface TrashCanDAO {
   register(trashCan: TrashCan): Promise<boolean>;
   getTrashCanByName(trashCanId: string): Promise<TrashCan | null>;
   getTrashCanById(trashCanId: string): Promise<TrashCan | null>;
+  getTrashCanListByAdminId(adminId: string): Promise<TrashCan[]>;
 }
 
 export class FirebaseTrashCanDAO implements TrashCanDAO {
@@ -48,5 +49,19 @@ export class FirebaseTrashCanDAO implements TrashCanDAO {
       id: trashCanId,
     } as TrashCan;
     return trashCan;
+  }
+
+  public async getTrashCanListByAdminId(adminId: string): Promise<TrashCan[]> {
+    const trashCanRef = await this.db.collection("trash_can")
+      .where("adminId", "==", adminId)
+      .get();
+    if (trashCanRef.empty) {
+      return [];
+    }
+    const trashCanList = trashCanRef.docs.map((trashCanDoc) => {
+      const trashCan = trashCanDoc.data() as TrashCan;
+      return trashCan;
+    });
+    return trashCanList;
   }
 }

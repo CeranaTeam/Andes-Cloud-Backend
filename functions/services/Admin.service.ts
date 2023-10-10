@@ -51,8 +51,12 @@ export default class AdminService {
     return true;
   }
 
-  public get_trash_can_list() {
-
+  public getTrashCanList(adminId: string) {
+    const admin = this.adminDAO.getAdminById(adminId);
+    if (admin === null) {
+      throw new AdminNotFoundError("not registered yet");
+    }
+    return this.trashCanDAO.getTrashCanListByAdminId(adminId);
   }
 
   public get_img_info_list(trash_can_id: string) {
