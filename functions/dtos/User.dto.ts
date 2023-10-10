@@ -10,4 +10,4 @@ type UserLabelImageDTO = {
   readonly user_label: string;
 }
 
-export { UserRegisterDTO, UserLabelImageDTO };
+export {UserRegisterDTO, UserLabelImageDTO};
