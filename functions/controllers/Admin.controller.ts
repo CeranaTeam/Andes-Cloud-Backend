@@ -56,6 +56,20 @@ class AdminController {
       logger.error(error);
     }
   }
+
+  getImageInfoList = async (req: Request, res: Response) => {
+    try {
+      const decodedClaims = req.body.decodedClaims;
+      const adminId = decodedClaims.uid;
+      const trashCanId = req.params.trashCanId;
+      const imageInfoList = await this.adminService.getImageInfoList(trashCanId, adminId);
+      res.status(200).json(new SuccessResponseData("成功取得圖片列表", imageInfoList));
+    } catch (error: any) {
+      const status = errorStatusMap[error.constructor.name] || 500;
+      res.status(status).json({ success: false, error: error.message });
+      logger.error(error);
+    }
+  }
 }
 
 export { AdminController };

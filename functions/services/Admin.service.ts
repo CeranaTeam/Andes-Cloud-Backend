@@ -1,8 +1,10 @@
 import {AdminDAO} from "../daos/Admin.dao";
+import {ImageDAO} from "../daos/Image.dao";
 import {StorageDAO} from "../daos/Storage.dao";
 import {TrashCanDAO} from "../daos/TrashCan.dao";
 import {AddTrashCanDTO, AdminRegisterDTO} from "../dtos/Admin.dto";
 import {AdminNotFoundError} from "../errors/Admin.error";
+import {UnauthorizedError} from "../errors/Base.error";
 import {TrashCanNotFoundError} from "../errors/TrashCan.error";
 import {Admin} from "../models/Admin.model";
 import {TrashCan} from "../models/TrashCan.model";
@@ -12,11 +14,13 @@ export default class AdminService {
   private adminDAO: AdminDAO;
   private trashCanDAO: TrashCanDAO;
   private storageDAO: StorageDAO;
+  private imageDAO: ImageDAO;
 
-  constructor(adminDAO: AdminDAO, trashCanDAO: TrashCanDAO, storageDAO: StorageDAO) {
+  constructor(adminDAO: AdminDAO, trashCanDAO: TrashCanDAO, storageDAO: StorageDAO, imageDAO: ImageDAO) {
     this.adminDAO = adminDAO;
     this.trashCanDAO = trashCanDAO;
     this.storageDAO = storageDAO;
+    this.imageDAO = imageDAO;
   }
 
   public register(adminRegisterDTO: AdminRegisterDTO) {
@@ -51,15 +55,26 @@ export default class AdminService {
     return true;
   }
 
-  public getTrashCanList(adminId: string) {
-    const admin = this.adminDAO.getAdminById(adminId);
+  public async getTrashCanList(adminId: string) {
+    const admin = await this.adminDAO.getAdminById(adminId);
     if (admin === null) {
       throw new AdminNotFoundError("not registered yet");
     }
     return this.trashCanDAO.getTrashCanListByAdminId(adminId);
   }
 
-  public get_img_info_list(trash_can_id: string) {
-
+  public async getImageInfoList(trashCanId: string, adminId: string) {
+    const admin = await this.adminDAO.getAdminById(adminId);
+    if (admin === null) {
+      throw new AdminNotFoundError("not registered yet");
+    }
+    const trashCan = await this.trashCanDAO.getTrashCanById(trashCanId);
+    if (trashCan === null) {
+      throw new TrashCanNotFoundError("trash can not found");
+    }
+    if (trashCan.adminId !== adminId) {
+      throw new UnauthorizedError("this trash can is not yours :} ");
+    }
+    return this.imageDAO.getImagesByTrashCanId(trashCanId);
   }
 }
