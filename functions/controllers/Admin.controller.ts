@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 import AdminService from "../services/Admin.service";
 import { logger } from "firebase-functions/v1";
-import { SuccessPOSTResponseData } from "../dtos/Response.dto";
+import { SuccessPOSTResponseData, SuccessResponseData } from "../dtos/Response.dto";
 import { AddTrashCanDTO, AdminRegisterDTO } from "../dtos/Admin.dto";
 import { errorStatusMap } from "../errors";
 
@@ -49,7 +49,7 @@ class AdminController {
       const decodedClaims = req.body.decodedClaims;
       const adminId = decodedClaims.uid;
       const trashCanList = await this.adminService.getTrashCanList(adminId);
-      res.status(200).json(trashCanList);
+      res.status(200).json(new SuccessResponseData("成功取得垃圾桶列表", trashCanList));
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
       res.status(status).json({ success: false, error: error.message });
