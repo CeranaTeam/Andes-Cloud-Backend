@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 import * as admin from "firebase-admin";
 import {Bucket} from "@google-cloud/storage";
 
@@ -6,8 +6,6 @@ class FirebaseService {
   private static instance: FirebaseService;
   private db?: FirebaseFirestore.Firestore;
   private bucket?: Bucket;
-
-  private constructor() { }
 
   static getInstance(): FirebaseService {
     if (!this.instance) {

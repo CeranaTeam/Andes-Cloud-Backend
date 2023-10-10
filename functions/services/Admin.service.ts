@@ -9,7 +9,7 @@ import {TrashCanNotFoundError} from "../errors/TrashCan.error";
 import {Admin} from "../models/Admin.model";
 import {TrashCan} from "../models/TrashCan.model";
 
-/* eslint-disable */
+
 export default class AdminService {
   private adminDAO: AdminDAO;
   private trashCanDAO: TrashCanDAO;
@@ -28,7 +28,7 @@ export default class AdminService {
       id: adminRegisterDTO.uid,
       name: adminRegisterDTO.name,
       email: adminRegisterDTO.email,
-    }
+    };
     return this.adminDAO.register(admin);
   }
 
@@ -48,7 +48,7 @@ export default class AdminService {
       location: addTrashCanDto.location,
       imageUrl: imageUrl,
       adminId: adminId,
-    }
+    };
     // add trash can to db
     await this.trashCanDAO.register(trashCan);
 

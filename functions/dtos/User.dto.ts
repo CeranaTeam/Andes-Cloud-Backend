@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 type UserRegisterDTO = {
   readonly uid: string;
   readonly name: string;

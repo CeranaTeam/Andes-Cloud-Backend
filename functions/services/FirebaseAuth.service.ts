@@ -1,4 +1,5 @@
-/* eslint-disable */
+
+import {AuthService} from "../interfaces/AuthService";
 import {FirebaseService} from "./FirebaseStore.service";
 
 class FirebaseAuthService implements AuthService {
