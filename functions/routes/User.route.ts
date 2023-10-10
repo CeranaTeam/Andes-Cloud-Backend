@@ -17,6 +17,6 @@ router.post("/register", userController.register);
 router.post("/image/:imageId/label", userController.labelImage);
 router.get("/image/list", userController.getImageList);
 router.post("/point/throwing/trash_can/:trashCanId", userController.increasePointByThrowing);
-// router.get("/user/point/labelling/trash_can/:trash_can_id", UserController.getStaffStat);
+router.get("/image/:imageId/label", userController.labelImage);
 
 export default router;

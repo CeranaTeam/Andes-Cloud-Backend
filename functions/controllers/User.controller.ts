@@ -45,11 +45,7 @@ class UserController {
       const trashCanId = req.params.trashCanId;
       const decodedClaims = req.body.decodedClaims;
       const uid = decodedClaims.uid;
-      const result = await this.userService.increasePointByThrowing(trashCanId, uid);
-      if (result === null) {
-        res.status(200).json(new SuccessPOSTResponseData("沒有可以增加的點數"));
-        return;
-      }
+      await this.userService.increasePointByThrowing(trashCanId, uid);
       res.status(200).json(new SuccessPOSTResponseData("成功增加點數"));
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
@@ -78,7 +74,7 @@ class UserController {
     const label = req.body.label;
     try {
       await this.userService.labelImage(uid, imageId, label);
-      res.status(200).json(new SuccessResponseData("成功標記圖片", null));
+      res.status(200).json(new SuccessPOSTResponseData("成功標記圖片"));
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
       res.status(status).json({ success: false, error: error.message });

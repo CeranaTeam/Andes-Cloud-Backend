@@ -4,6 +4,7 @@ import {FirebaseService} from "../services/FirebaseStore.service";
 export interface ImageDAO {
   getImagesByUserId(userId: string): Promise<Array<Image> | null>
   getImagesByTrashCanId(trashCanId: string): Promise<Array<Image> | null>
+  getImageById(imageId: string): Promise<Image | null>
   collectImages(trashCanId: string, userId: string): Promise<Array<Image> | null>
   getNotCollectedImagesByTrashCanId(trashCanId: string): Promise<Array<Image> | null>
   labelImage(uid: string, imageId: string, label: string): Promise<boolean>;
@@ -47,6 +48,20 @@ class FirebaseImageDAO implements ImageDAO {
       return image as Image;
     });
     return images;
+  }
+
+  public async getImageById(imageId: string): Promise<Image | null> {
+    const imageRef = await this.db.collection("image").doc(imageId).get();
+    if (!imageRef.exists) {
+      return null;
+    }
+    const image = imageRef.data();
+    console.log("%cImage.dao.ts line:59 image", "color: #007acc;", image);
+    if (!image) {
+      return null;
+    }
+    image.id = imageRef.id;
+    return image as Image;
   }
 
   public async collectImages(trashCanId: string, userId: string): Promise<Array<Image> | null> {
@@ -93,11 +108,9 @@ class FirebaseImageDAO implements ImageDAO {
   }
 
   public async labelImage(uid: string, imageId: string, label: string): Promise<boolean> {
-    const imageRef = await this.db.collection("images").doc(imageId);
+    const imageRef = await this.db.collection("image").doc(imageId);
     await imageRef.update({
       labelResult: {"label": label},
-      isCollected: true,
-      userId: uid,
     });
     return true;
   }
