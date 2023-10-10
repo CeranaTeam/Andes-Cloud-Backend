@@ -9,8 +9,14 @@ const app = express();
 app.use(bodyParser.json({limit: "10mb"}));
 app.use("/", router);
 
+app.get("/health", (req, res) => {
+  res.send("ok");
+});
+
 setGlobalOptions({region: "asia-east1", maxInstances: 5});
 
 export const api = onRequest(app);
 
 export const dev = onRequest(app);
+
+export const test = onRequest(app);
