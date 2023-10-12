@@ -16,7 +16,7 @@ const cors = _cors({
     // "https://ledger.cerana.tech",
     // "https://ledger.v2.cerana.tech",
     // "http://localhost:5173",
-    "*"
+    "*",
   ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
   allowedHeaders: ["Content-Type", "Authorization"],
