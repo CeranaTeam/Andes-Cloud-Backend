@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 import {Request, Response, NextFunction} from "express";
 import {FirebaseAuthService} from "../services/FirebaseAuth.service";
 

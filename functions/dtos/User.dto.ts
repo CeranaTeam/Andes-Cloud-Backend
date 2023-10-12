@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 type UserRegisterDTO = {
   readonly uid: string;
   readonly name: string;
@@ -10,4 +10,4 @@ type UserLabelImageDTO = {
   readonly user_label: string;
 }
 
-export { UserRegisterDTO, UserLabelImageDTO };
+export {UserRegisterDTO, UserLabelImageDTO};

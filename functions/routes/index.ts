@@ -7,6 +7,6 @@ import {AuthFilter} from "../middleware/Validator";
 const router = expressRouter();
 router.use("/user", AuthFilter, UserRoute);
 router.use("/admin", AuthFilter, AdminRoute);
-router.use("/trash_can", AuthFilter, TrashCanRoute);
+router.use("/trash_can", TrashCanRoute);
 
 export default router;

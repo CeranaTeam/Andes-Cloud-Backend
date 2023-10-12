@@ -1,4 +1,3 @@
-/* eslint-disable */
-interface AuthService {
+export interface AuthService {
   verifyToken(token: string): Promise<any>;
 }
