@@ -16,7 +16,7 @@ const cors = _cors({
     // "https://ledger.cerana.tech",
     // "https://ledger.v2.cerana.tech",
     // "http://localhost:5173",
-    "localhost:5173",
+    "http://localhost:5173",
     /cerana\.tech$/,
     /web\.app$/,
     /ebg\.tw$/,
