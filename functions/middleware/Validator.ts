@@ -1,22 +1,6 @@
 
 import {Request, Response, NextFunction} from "express";
-import {FirebaseAuthService} from "../services/FirebaseAuth.service";
-
-// function validateRequestBody<T>(
-//   req: Request,
-//   res: Response,
-//   next: NextFunction,
-//   validationFunction: (request: T) => boolean // 接收通用的验证函数作为参数
-// ) {
-//   const body = req.body as T;
-
-//   if (!validationFunction(body)) {
-//     return res.status(400).json({ error: '请求参数无效' });
-//   }
-
-//   return next();
-// }
-
+import {LocalAuthService} from "../services/LocalAuth.service";
 
 async function AuthFilter(req: Request, res: Response, next: NextFunction) {
   try {
@@ -29,7 +13,7 @@ async function AuthFilter(req: Request, res: Response, next: NextFunction) {
       });
     }
     const token = components[1];
-    const authService = new FirebaseAuthService();
+    const authService = new LocalAuthService();
     const decodedClaims = await authService.verifyToken(token);
     // const decodedClaims = await admin.auth().verifyIdToken(token);
     req.body.decodedClaims = decodedClaims;

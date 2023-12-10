@@ -1,7 +1,7 @@
 
 import {ImageDAO} from "../daos/Image.dao";
 import {UserDAO} from "../daos/User.dao";
-import {UserRegisterDTO} from "../dtos/User.dto";
+import {UserLocalRegisterDTO} from "../dtos/User.dto";
 import {UnauthorizedError} from "../errors/Base.error";
 import {ImageAlreadyLabelledError, ImageNotFoundError} from "../errors/Image.error";
 import {User} from "../models/User.model";
@@ -14,12 +14,13 @@ class UserService {
     this.imageDAO = imageDAO;
   }
 
-  public register(userRegisterDto: UserRegisterDTO) {
+  public register(userRegisterDto: UserLocalRegisterDTO) {
     const user: User = {
-      uid: userRegisterDto.uid,
+      uid: userRegisterDto.uid || "",
       name: userRegisterDto.name,
       email: userRegisterDto.email,
       point: 0,
+      password: userRegisterDto.password,
     };
     return this.userDAO.register(user);
   }
@@ -40,6 +41,7 @@ class UserService {
     if (image.userId !== uid) {
       throw new UnauthorizedError("沒有權限標記此圖片");
     }
+    this.increase_point_by_labelling(uid);
     return await this.imageDAO.labelImage(uid, imageId, label);
   };
 
@@ -53,8 +55,8 @@ class UserService {
     return newPoint;
   }
 
-  public increase_point_by_labelling() {
-    // this.increase_point(2);
+  public increase_point_by_labelling(uid: string) {
+    this.increase_point(2, uid);
   }
 
   private async increase_point(point: number, userId: string) {

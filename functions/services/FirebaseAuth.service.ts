@@ -12,6 +12,10 @@ class FirebaseAuthService implements AuthService {
   async verifyToken(token: string): Promise<any> {
     return this.admin.auth().verifyIdToken(token);
   }
+
+  async createToken(payload: object, expiresIn = "1h"): Promise<string> {
+    return this.admin.auth().createCustomToken(payload);
+  }
 }
 
 export {FirebaseAuthService};

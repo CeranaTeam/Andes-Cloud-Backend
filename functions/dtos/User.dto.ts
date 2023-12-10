@@ -1,3 +1,9 @@
+type UserLocalRegisterDTO = {
+  readonly uid?: string;
+  readonly name: string;
+  readonly email: string;
+  readonly password: string;
+}
 
 type UserRegisterDTO = {
   readonly uid: string;
@@ -10,4 +16,5 @@ type UserLabelImageDTO = {
   readonly user_label: string;
 }
 
-export {UserRegisterDTO, UserLabelImageDTO};
+
+export {UserRegisterDTO, UserLabelImageDTO, UserLocalRegisterDTO};

@@ -1,29 +1,77 @@
-
 import {Request, Response} from "express";
 import UserService from "../services/User.service";
-import {logger} from "firebase-functions/v1";
-import {SuccessPOSTResponseData, SuccessResponseData} from "../dtos/Response.dto";
-import {UserRegisterDTO} from "../dtos/User.dto";
+import {
+  SuccessPOSTResponseData,
+  SuccessResponseData,
+} from "../dtos/Response.dto";
 import {errorStatusMap} from "../errors";
-
+import {AuthService} from "../interfaces/AuthService";
 
 class UserController {
   private userService: UserService;
+  private authService: AuthService;
 
-  constructor(userService: UserService) {
+  constructor(userService: UserService, authService: AuthService) {
     this.userService = userService;
+    this.authService = authService;
   }
+
+  generateUUID = () => {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      /[xy]/g,
+      function(c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c == "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      },
+    );
+  };
 
   register = async (req: Request, res: Response) => {
     try {
-      const decodedClaims = req.body.decodedClaims;
-      const userRegisterDTO: UserRegisterDTO = decodedClaims;
+      const uid = this.generateUUID();
+      const userRegisterDTO = {
+        uid: uid,
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+      };
+      if (!userRegisterDTO.name) {
+        throw new Error("please provide name");
+      }
+      if (!userRegisterDTO.email) {
+        throw new Error("please provide email");
+      }
+      if (!userRegisterDTO.password) {
+        throw new Error("please provide password");
+      }
       await this.userService.register(userRegisterDTO);
-      res.status(200).json(new SuccessPOSTResponseData("成功註冊"));
+      const token = await this.authService.createToken({
+        uid: userRegisterDTO.uid,
+      }, "10000h");
+      res.status(200).json(
+        new SuccessResponseData("成功註冊", {token: token}),
+      );
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
       res.status(status).json({success: false, error: error.message});
-      logger.error(error);
+      console.log(error);
+    }
+  };
+
+  signIn = async (req: Request, res: Response) => {
+    try {
+      const decodedClaims = req.body.decodedClaims;
+      const token = await this.authService.createToken({
+        uid: decodedClaims.uid,
+      }, "1000h");
+      res.status(200).json(
+        new SuccessResponseData("成功登入", {token: token}),
+      );
+    } catch (error: any) {
+      const status = errorStatusMap[error.constructor.name] || 500;
+      res.status(status).json({success: false, error: error.message});
+      console.log(error);
     }
   };
 
@@ -36,7 +84,7 @@ class UserController {
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
       res.status(status).json({success: false, error: error.message});
-      logger.error(error);
+      console.log(error);
     }
   };
 
@@ -50,7 +98,7 @@ class UserController {
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
       res.status(status).json({success: false, error: error.message});
-      logger.error(error);
+      console.log(error);
     }
   };
 
@@ -63,7 +111,7 @@ class UserController {
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
       res.status(status).json({success: false, error: error.message});
-      logger.error(error);
+      console.log(error);
     }
   };
 
@@ -78,7 +126,7 @@ class UserController {
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
       res.status(status).json({success: false, error: error.message});
-      logger.error(error);
+      console.log(error);
     }
   };
 }
