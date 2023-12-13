@@ -1,15 +1,15 @@
 import {Router as expressRouter} from "express";
 import {UserController} from "../controllers/User.controller";
 import UserService from "../services/User.service";
-import {FirebaseImageDAO} from "../daos/Image.dao";
 import {LocalAuthService} from "../services/LocalAuth.service";
 import {AuthFilter} from "../middleware/Validator";
 import {MongoUserDAO} from "../daos/User.mongo.dao";
+import {MongoImageDAO} from "../daos/Image.mongo.dao";
 const router = expressRouter();
 
 // ------- dependency injection -------
 const userDAO = new MongoUserDAO();
-const imageDAO = new FirebaseImageDAO();
+const imageDAO = new MongoImageDAO();
 const authService = new LocalAuthService();
 const userService = new UserService(userDAO, imageDAO);
 const userController = new UserController(userService, authService);

@@ -34,8 +34,27 @@ export class MongoUserDAO implements UserDAO {
     }
   }
 
+  async getUserByEmail(email: string): Promise<User | null> {
+    try {
+      const db = await this.getDb();
+      const result = await db.collection("user").findOne({email: email});
+      if (result) {
+        return {
+          id: result._id.toString(),
+          uid: result.uid,
+          name: result.name,
+          email: result.email,
+          point: result.point,
+        } as User;
+      }
+      return null;
+    } catch (error) {
+      throw new Error(`Error finding user: ${error}`);
+    }
+  }
+
   public async register(user: User): Promise<boolean> {
-    const existingUser = await this.getUserById(user.uid);
+    const existingUser = await this.getUserByEmail(user.email);
     if (existingUser !== null) {
       throw new UserAlreadyExistsError("User already exists");
     }
