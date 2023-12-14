@@ -21,8 +21,8 @@ const cors = _cors({
   allowedHeaders: ["Content-Type", "Authorization"],
 });
 
+app.use("/static", express.static("public"));
 app.use(cors);
-
 app.use("/", router);
 app.get("/health", (req, res) => {
   res.send("ok");
