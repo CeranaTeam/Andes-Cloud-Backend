@@ -1,29 +1,60 @@
 
 import {Request, Response} from "express";
 import AdminService from "../services/Admin.service";
-import {logger} from "firebase-functions/v1";
 import {SuccessPOSTResponseData, SuccessResponseData} from "../dtos/Response.dto";
 import {AddTrashCanDTO, AdminRegisterDTO} from "../dtos/Admin.dto";
 import {errorStatusMap} from "../errors";
+import {AuthService} from "../interfaces/AuthService";
 
 
 class AdminController {
   private adminService: AdminService;
+  private authService: AuthService;
 
-  constructor(adminService: AdminService) {
+  constructor(adminService: AdminService, authService: AuthService) {
     this.adminService = adminService;
+    this.authService = authService;
   }
+
+  generateUUID = () => {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      /[xy]/g,
+      function(c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c == "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      },
+    );
+  };
+
 
   register = async (req: Request, res: Response) => {
     try {
-      const decodedClaims = req.body.decodedClaims;
-      const adminRegisterDTO: AdminRegisterDTO = decodedClaims;
+      const uid = this.generateUUID();
+      const adminRegisterDTO: AdminRegisterDTO = {
+        uid: uid,
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+      };
+      if (!adminRegisterDTO.name) {
+        throw new Error("please provide name");
+      }
+      if (!adminRegisterDTO.email) {
+        throw new Error("please provide email");
+      }
+      if (!adminRegisterDTO.password) {
+        throw new Error("please provide password");
+      }
+      const token = await this.authService.createToken({
+        uid: adminRegisterDTO.uid,
+      }, "10000h");
       await this.adminService.register(adminRegisterDTO);
-      res.status(200).json(new SuccessPOSTResponseData("成功註冊"));
+      res.status(200).json(new SuccessResponseData("成功註冊", {token: token}));
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
       res.status(status).json({success: false, error: error.message});
-      logger.error(error);
+      console.log(error);
     }
   };
 
@@ -40,7 +71,7 @@ class AdminController {
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
       res.status(status).json({success: false, error: error.message});
-      logger.error(error);
+      console.log(error);
     }
   };
 
@@ -53,7 +84,7 @@ class AdminController {
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
       res.status(status).json({success: false, error: error.message});
-      logger.error(error);
+      console.log(error);
     }
   };
 
@@ -67,7 +98,7 @@ class AdminController {
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
       res.status(status).json({success: false, error: error.message});
-      logger.error(error);
+      console.log(error);
     }
   };
 }
