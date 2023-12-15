@@ -48,6 +48,8 @@ class UserController {
       await this.userService.register(userRegisterDTO);
       const token = await this.authService.createToken({
         uid: userRegisterDTO.uid,
+        name: userRegisterDTO.name,
+        email: userRegisterDTO.email,
       }, "10000h");
       res.status(200).json(
         new SuccessResponseData("成功註冊", {token: token}),
