@@ -1,7 +1,6 @@
 
 import {Request, Response} from "express";
 import TrashCanService from "../services/TrashCan.service";
-import {logger} from "firebase-functions/v1";
 import {SuccessPOSTResponseData} from "../dtos/Response.dto";
 import {errorStatusMap} from "../errors";
 import {DetectResultDTO} from "../dtos/TrashCan.dto";
@@ -24,7 +23,7 @@ class TrashCanController {
     } catch (error: any) {
       const status = errorStatusMap[error.constructor.name] || 500;
       res.status(status).json({success: false, error: error.message});
-      logger.error(error);
+      console.log(error);
     }
   };
 }
