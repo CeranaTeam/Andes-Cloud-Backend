@@ -67,12 +67,12 @@ class UserService {
       throw new TrashCanNotFoundError("查無此垃圾桶");
     }
 
-    const images = await this.imageDAO.collectImages(trashCanId, userId);
-    if (images.length === 0) {
+    const notCollectedImages = await this.imageDAO.getNotCollectedImagesByTrashCanId(trashCanId);
+    if (notCollectedImages.length === 0) {
       throw new ImageNotFoundError("沒有可以增加的點數");
     }
-    const amount = images.length;
-    const newPoint = this.increase_point(amount, userId);
+    await this.imageDAO.collectImages(trashCanId, userId);
+    const newPoint = this.increase_point(notCollectedImages.length, userId);
     return newPoint;
   }
 

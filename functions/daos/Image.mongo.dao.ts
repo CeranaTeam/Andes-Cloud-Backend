@@ -28,7 +28,6 @@ class MongoImageDAO implements ImageDAO {
     const imageDocs = await db.collection("images")
       .find({trashCanId: trashCanId})
       .toArray();
-    console.log("%cImage.mongo.dao.ts line:63 imageDocs", "color: #007acc;", imageDocs);
 
     return imageDocs.map((doc) => this.convertToImage(doc));
   }
@@ -48,6 +47,7 @@ class MongoImageDAO implements ImageDAO {
         {trashCanId: trashCanId, isCollected: false},
         {$set: {isCollected: true, userId: userId}}
       );
+    console.log("%cImage.mongo.dao.ts line:51 updateResult", "color: #007acc;", updateResult);
 
     if (updateResult.matchedCount === 0) {
       return [];
@@ -59,7 +59,7 @@ class MongoImageDAO implements ImageDAO {
   public async getNotCollectedImagesByTrashCanId(trashCanId: string): Promise<Array<Image>> {
     const db = await this.getDb();
     const imageDocs = await db.collection("images")
-      .find({trashCanId: new ObjectId(trashCanId), isCollected: false})
+      .find({trashCanId: trashCanId, isCollected: false})
       .toArray();
     return imageDocs.map((doc) => this.convertToImage(doc));
   }
