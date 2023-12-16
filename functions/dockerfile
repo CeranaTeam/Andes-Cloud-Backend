@@ -1,6 +1,6 @@
 FROM node:18
 
-WORKDIR /usr/src/app
+WORKDIR /func
 
 COPY package*.json ./
 
@@ -10,6 +10,7 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 6767
 
-CMD ["node", "lib/index.js"]
+CMD ["npm", "run", "start"]
+
