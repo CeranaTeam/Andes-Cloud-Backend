@@ -16,7 +16,6 @@ export class LocalStorageDAO {
     try {
       fs.mkdirSync(this.storagePath, {recursive: true});
       fs.writeFileSync(filePath, buffer);
-      console.log("%cStorage.local.dao.ts line:18 filePath", "color: #007acc;", filePath);
 
       const url = `/static/images/${imageName}`;
       return url;

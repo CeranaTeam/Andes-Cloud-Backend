@@ -47,7 +47,6 @@ class MongoImageDAO implements ImageDAO {
         {trashCanId: trashCanId, isCollected: false},
         {$set: {isCollected: true, userId: userId}}
       );
-    console.log("%cImage.mongo.dao.ts line:51 updateResult", "color: #007acc;", updateResult);
 
     if (updateResult.matchedCount === 0) {
       return [];
