@@ -1,37 +1,39 @@
 # How to start
 
-## docker-compose
+## Docker Compose
 
-```bash
-cd functions
-docker compose up -d
-```
+    cd functions
+    docker compose up -d
 
-## restore data (you must execute this command in `/functions` directory)
+## Restore Data
 
-```bash
-bash scripts/restore.sh
-```
+You must execute this command in the `/functions` directory:
 
-## how to get image
-**you better upload `.jpg` image**
+    bash scripts/restore.sh
 
-http://localhost:6767/static/images/{{image_name}}
+## How to Get Image
 
-example: http://localhost:6767/static/images/hh.jpg
+You should upload `.jpg` images. You can access the uploaded images at:
 
+    http://localhost:6767/static/images/{{image_name}}
 
-:warning: **the `image_name` is determined by the filename when frontend uploads**
+For example:
 
-## how to backup data (you must execute this command in `/functions` directory)
+    http://localhost:6767/static/images/hh.jpg
 
-```bash
-bash scripts/backup.sh
-```
+:warning: The `image_name` is determined by the filename when the frontend uploads the image.
 
-## import postman collection ---> `/postman` directory
+## How to Backup Data
+
+You must execute this command in the `/functions` directory:
+
+    bash scripts/backup.sh
+
+## Import Postman Collection
+
+Navigate to the `/postman` directory:
 
 1. `Andes.postman_collection.json` : collection
 2. `local.postman_environment.json` : environment
 
-**after sending `register` API, you have to paste the token into the environment variable into POSTMAN**
+After sending the `register` API request, paste the received token into the environment variable in Postman.
