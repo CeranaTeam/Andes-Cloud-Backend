@@ -14,14 +14,14 @@ services:
       retries: 3
       start_period: 3s
 
-  # server:
-  #   container_name: function
-  #   build: .
-  #   ports:
-  #     - "6767:6767"
-  #   depends_on:
-  #     - mongo
-  #   restart: always
+  server:
+    container_name: function
+    build: .
+    ports:
+      - "6767:6767"
+    depends_on:
+      - mongo
+    restart: always
 
 volumes:
   mongo-data-1:
