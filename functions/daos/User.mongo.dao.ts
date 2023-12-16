@@ -95,4 +95,9 @@ export class MongoUserDAO implements UserDAO {
     await db.collection("user").updateOne({uid}, {$set: {point: newPoint}});
     return newPoint;
   }
+
+  public async appendPointLog(uid: string, point: number, reason: string): Promise<void> {
+    const db = await this.getDb();
+    await db.collection("user").updateOne({uid}, {$push: {pointLog: {point, reason}}});
+  }
 }

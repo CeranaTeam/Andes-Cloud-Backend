@@ -73,11 +73,13 @@ class UserService {
     }
     await this.imageDAO.collectImages(trashCanId, userId);
     const newPoint = this.increase_point(notCollectedImages.length, userId);
+    this.appendPointLog(userId, notCollectedImages.length, "throw");
     return newPoint;
   }
 
   public increase_point_by_labelling(uid: string) {
     this.increase_point(2, uid);
+    this.appendPointLog(uid, 2, "label");
   }
 
   private async increase_point(point: number, userId: string) {
@@ -88,6 +90,10 @@ class UserService {
   public async getImageList(uid: string) {
     const images = await this.imageDAO.getImagesByUserId(uid);
     return images;
+  }
+
+  public async appendPointLog(uid: string, point: number, type: string) {
+    await this.userDAO.appendPointLog(uid, point, type);
   }
 }
 

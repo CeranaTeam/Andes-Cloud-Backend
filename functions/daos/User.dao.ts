@@ -9,6 +9,7 @@ export interface UserDAO {
   getUserById(id: string): Promise<User | null>;
   getUserByEmail(email: string): Promise<User | null>;
   checkUserPassword(email: string, password: string): Promise<boolean>;
+  appendPointLog(uid: string, point: number, reason: string): Promise<void>;
 }
 
 export class FirebaseUserDAO implements UserDAO {
@@ -73,5 +74,9 @@ export class FirebaseUserDAO implements UserDAO {
     const newPoint = user.point + point;
     await userRefToUpdate.update({point: newPoint});
     return newPoint;
+  }
+
+  public async appendPointLog(uid: string, point: number, reason: string): Promise<void> {
+    throw new Error("Not implemented");
   }
 }
