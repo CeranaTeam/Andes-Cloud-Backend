@@ -1,0 +1,1 @@
+docker exec -i functions-mongo-1 sh -c "mongorestore ./scripts/mongo_data"

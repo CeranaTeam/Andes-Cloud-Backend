@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"68f64ce5e0cb41e28deabbfd1e78d9ec","collectionName":"trash_cans","type":"collection"}

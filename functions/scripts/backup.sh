@@ -1,0 +1,1 @@
+docker exec functions-mongo-1 sh -c 'mongodump --db dev --out ./scripts/mongo_data'
