@@ -5,13 +5,15 @@ import {LocalAuthService} from "../services/LocalAuth.service";
 import {AuthFilter} from "../middleware/Validator";
 import {MongoUserDAO} from "../daos/User.mongo.dao";
 import {MongoImageDAO} from "../daos/Image.mongo.dao";
+import {MongoTrashCanDAO} from "../daos/TrashCan.mongo.dao";
 const router = expressRouter();
 
 // ------- dependency injection -------
 const userDAO = new MongoUserDAO();
 const imageDAO = new MongoImageDAO();
+const trashCanDAO = new MongoTrashCanDAO();
 const authService = new LocalAuthService();
-const userService = new UserService(userDAO, imageDAO);
+const userService = new UserService(userDAO, imageDAO, trashCanDAO);
 const userController = new UserController(userService, authService);
 // ------- dependency injection -------
 

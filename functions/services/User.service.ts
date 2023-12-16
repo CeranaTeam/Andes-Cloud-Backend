@@ -1,17 +1,21 @@
 
 import {ImageDAO} from "../daos/Image.dao";
+import {TrashCanDAO} from "../daos/TrashCan.dao";
 import {UserDAO} from "../daos/User.dao";
 import {UserLocalRegisterDTO} from "../dtos/User.dto";
 import {UnauthorizedError} from "../errors/Base.error";
 import {ImageAlreadyLabelledError, ImageNotFoundError} from "../errors/Image.error";
+import {TrashCanNotFoundError} from "../errors/TrashCan.error";
 import {User} from "../models/User.model";
 class UserService {
   private userDAO: UserDAO;
   private imageDAO: ImageDAO;
+  private trashCanDAO: TrashCanDAO;
 
-  constructor(userDAO: UserDAO, imageDAO: ImageDAO) {
+  constructor(userDAO: UserDAO, imageDAO: ImageDAO, trashCanDAO: TrashCanDAO) {
     this.userDAO = userDAO;
     this.imageDAO = imageDAO;
+    this.trashCanDAO = trashCanDAO;
   }
 
   public register(userRegisterDto: UserLocalRegisterDTO) {
@@ -46,6 +50,11 @@ class UserService {
   };
 
   public async increasePointByThrowing(trashCanId: string, userId: string) {
+    const trashCan = await this.trashCanDAO.getTrashCanById(trashCanId);
+    if (trashCan === null) {
+      throw new TrashCanNotFoundError("查無此垃圾桶");
+    }
+
     const images = await this.imageDAO.collectImages(trashCanId, userId);
     if (images.length === 0) {
       throw new ImageNotFoundError("沒有可以增加的點數");
@@ -65,7 +74,8 @@ class UserService {
   }
 
   public async getImageList(uid: string) {
-    return this.imageDAO.getImagesByUserId(uid);
+    const images = await this.imageDAO.getImagesByUserId(uid);
+    return images;
   }
 }
 
