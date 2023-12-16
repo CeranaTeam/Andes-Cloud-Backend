@@ -7,6 +7,8 @@ export interface UserDAO {
   getCurrentPoint(id: string): Promise<number>;
   increasePoint(uid: string, point: number): Promise<number>;
   getUserById(id: string): Promise<User | null>;
+  getUserByEmail(email: string): Promise<User | null>;
+  checkUserPassword(email: string, password: string): Promise<boolean>;
 }
 
 export class FirebaseUserDAO implements UserDAO {
@@ -27,6 +29,14 @@ export class FirebaseUserDAO implements UserDAO {
     const userDoc = userRef.docs[0];
     const user = userDoc.data() as User;
     return user;
+  }
+
+  public async getUserByEmail(email: string): Promise<User | null> {
+    return null;
+  }
+
+  public async checkUserPassword(email: string, password: string): Promise<boolean> {
+    return false;
   }
 
   public async register(user: User): Promise<boolean> {

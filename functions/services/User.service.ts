@@ -29,6 +29,18 @@ class UserService {
     return this.userDAO.register(user);
   }
 
+  public async signIn(email: string, password: string) {
+    const user = await this.userDAO.getUserByEmail(email);
+    if (user === null) {
+      throw new UnauthorizedError("查無此用戶");
+    }
+    const isPasswordCorrect = this.userDAO.checkUserPassword(email, password);
+    if (!isPasswordCorrect) {
+      throw new UnauthorizedError("密碼錯誤");
+    }
+    return user;
+  }
+
   public checkCurrentPoint = async (userId: string) => {
     const point = await this.userDAO.getCurrentPoint(userId);
     return point;

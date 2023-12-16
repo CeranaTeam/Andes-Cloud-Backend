@@ -53,6 +53,19 @@ export class MongoUserDAO implements UserDAO {
     }
   }
 
+  async checkUserPassword(email: string, password: string): Promise<boolean> {
+    try {
+      const db = await this.getDb();
+      const result = await db.collection("user").findOne({email: email});
+      if (result) {
+        return result.password === password;
+      }
+      return false;
+    } catch (error) {
+      throw new Error(`Error finding user: ${error}`);
+    }
+  }
+
   public async register(user: User): Promise<boolean> {
     const existingUser = await this.getUserByEmail(user.email);
     if (existingUser !== null) {

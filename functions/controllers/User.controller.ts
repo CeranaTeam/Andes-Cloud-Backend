@@ -63,9 +63,26 @@ class UserController {
 
   signIn = async (req: Request, res: Response) => {
     try {
-      const decodedClaims = req.body.decodedClaims;
+      if (!req.body.email) {
+        throw new Error("please provide email");
+      }
+      if (!req.body.password) {
+        throw new Error("please provide password");
+      }
+      const signInDTO = {
+        email: req.body.email,
+        password: req.body.password,
+      };
+
+      const user = await this.userService.signIn(
+        signInDTO.email,
+        signInDTO.password,
+      );
+
       const token = await this.authService.createToken({
-        uid: decodedClaims.uid,
+        uid: user.uid,
+        name: user.name,
+        email: user.email,
       }, "1000h");
       res.status(200).json(
         new SuccessResponseData("成功登入", {token: token}),

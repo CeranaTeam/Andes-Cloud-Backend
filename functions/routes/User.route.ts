@@ -19,7 +19,7 @@ const userController = new UserController(userService, authService);
 
 router.get("/point", AuthFilter, userController.checkUserPoint);
 router.post("/register", userController.register);
-// router.post("/refresh", userController.signIn);
+router.post("/signin", userController.signIn);
 router.post("/image/:imageId/label", AuthFilter, userController.labelImage);
 router.get("/image/list", AuthFilter, userController.getImageList);
 router.post(
