@@ -28,6 +28,7 @@ export default class AdminService {
       id: adminRegisterDTO.uid,
       name: adminRegisterDTO.name,
       email: adminRegisterDTO.email,
+      password: adminRegisterDTO.password,
     };
     return this.adminDAO.register(admin);
   }

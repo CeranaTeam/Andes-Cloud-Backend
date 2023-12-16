@@ -3,6 +3,7 @@ type AdminRegisterDTO = {
   readonly uid: string;
   readonly name: string;
   readonly email: string;
+  readonly password: string;
 }
 
 type AddTrashCanDTO = {
