@@ -33,6 +33,19 @@ export default class AdminService {
     return this.adminDAO.register(admin);
   }
 
+  public async signIn(email: string, password: string) {
+    const admin = await this.adminDAO.getAdminByEmail(email);
+    if (admin === null) {
+      throw new UnauthorizedError("查無此用戶");
+    }
+    const isPasswordCorrect = this.adminDAO.checkAdminPassword(email, password);
+    if (!isPasswordCorrect) {
+      throw new UnauthorizedError("密碼錯誤");
+    }
+    return admin;
+  }
+
+
   public async addTrashCan(addTrashCanDto: AddTrashCanDTO, adminId: string) {
     const adminData = await this.adminDAO.getAdminById(adminId);
     if (adminData === null) {

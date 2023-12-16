@@ -20,6 +20,7 @@ const adminController = new AdminController(adminService, authService);
 // ------- dependency injection -------
 
 router.post("/register", adminController.register);
+router.post("/signin", adminController.signIn);
 router.post("/trash_can", AuthFilter, adminController.addTrashCan);
 router.get("/trash_can/list", AuthFilter, adminController.getTrashCanList);
 router.get("/trash_can/:trashCanId/image/list", AuthFilter, adminController.getImageInfoList);

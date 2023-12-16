@@ -5,6 +5,8 @@ import {FirebaseService} from "../services/FirebaseStore.service";
 export interface AdminDAO {
   register(admin: Admin): Promise<boolean>;
   getAdminById(adminId: string): Promise<Admin | null>;
+  getAdminByEmail(email: string): Promise<Admin | null>;
+  checkAdminPassword(email: string, password: string): Promise<boolean>;
 }
 
 export class FirebaseAdminDAO implements AdminDAO {
@@ -24,6 +26,14 @@ export class FirebaseAdminDAO implements AdminDAO {
     }
     await this.db.collection("admin").add(admin);
     return true;
+  }
+
+  public async getAdminByEmail(email: string): Promise<Admin | null> {
+    return null;
+  }
+
+  public async checkAdminPassword(email: string, password: string): Promise<boolean> {
+    return false;
   }
 
   public async getAdminById(adminId: string): Promise<Admin | null> {

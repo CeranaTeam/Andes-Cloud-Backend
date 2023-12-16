@@ -61,4 +61,16 @@ export class MongoAdminDAO implements AdminDAO {
       email: admin.email,
     } as Admin;
   }
+
+  public async checkAdminPassword(email: string, password: string): Promise<boolean> {
+    const db = await this.getDb();
+    const admin = await db.collection("admins")
+      .findOne({email});
+
+    if (!admin) {
+      return false;
+    }
+
+    return admin.password === password;
+  }
 }
