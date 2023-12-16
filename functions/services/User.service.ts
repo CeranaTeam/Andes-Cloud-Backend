@@ -25,6 +25,7 @@ class UserService {
       email: userRegisterDto.email,
       point: 0,
       password: userRegisterDto.password,
+      pointLog: [],
     };
     return this.userDAO.register(user);
   }
@@ -43,7 +44,11 @@ class UserService {
 
   public checkCurrentPoint = async (userId: string) => {
     const point = await this.userDAO.getCurrentPoint(userId);
-    return point;
+    const pointLog = await this.userDAO.getPointLog(userId);
+    return {
+      point,
+      pointLog,
+    };
   };
 
   public labelImage = async (uid: string, imageId: string, label: string) => {

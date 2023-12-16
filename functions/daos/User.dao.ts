@@ -5,6 +5,7 @@ import {FirebaseService} from "../services/FirebaseStore.service";
 export interface UserDAO {
   register(user: User): Promise<boolean>;
   getCurrentPoint(id: string): Promise<number>;
+  getPointLog(id: string): Promise<any[]>;
   increasePoint(uid: string, point: number): Promise<number>;
   getUserById(id: string): Promise<User | null>;
   getUserByEmail(email: string): Promise<User | null>;
@@ -77,6 +78,10 @@ export class FirebaseUserDAO implements UserDAO {
   }
 
   public async appendPointLog(uid: string, point: number, reason: string): Promise<void> {
+    throw new Error("Not implemented");
+  }
+
+  public async getPointLog(id: string): Promise<any[]> {
     throw new Error("Not implemented");
   }
 }

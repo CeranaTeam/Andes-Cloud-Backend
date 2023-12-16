@@ -26,6 +26,7 @@ export class MongoUserDAO implements UserDAO {
           name: result.name,
           email: result.email,
           point: result.point,
+          pointLog: result.pointLog,
         } as User;
       }
       return null;
@@ -45,6 +46,7 @@ export class MongoUserDAO implements UserDAO {
           name: result.name,
           email: result.email,
           point: result.point,
+          pointLog: result.pointLog,
         } as User;
       }
       return null;
@@ -83,6 +85,14 @@ export class MongoUserDAO implements UserDAO {
       throw new UserNotFoundError("User not found");
     }
     return user.point;
+  }
+
+  public async getPointLog(id: string): Promise<any[]> {
+    const user = await this.getUserById(id);
+    if (user === null) {
+      throw new UserNotFoundError("User not found");
+    }
+    return user.pointLog;
   }
 
   public async increasePoint(uid: string, point: number): Promise<number> {

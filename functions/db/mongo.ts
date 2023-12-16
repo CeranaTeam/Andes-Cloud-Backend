@@ -1,5 +1,7 @@
 import {MongoClient, Db} from "mongodb";
+import dotenv from "dotenv";
 
+dotenv.config();
 
 class MongoDatabase {
   private client: MongoClient;
@@ -9,7 +11,8 @@ class MongoDatabase {
 
   constructor() {
     this.db;
-    this.url = process.env.MONGO_URL || "mongodb://localhost:27017";
+    this.url = process.env.MONGO_CONN_STRING || "mongodb://localhost:27017";
+    console.log('%cmongo.ts line:15 this.url', 'color: #007acc;', this.url);
     this.client = new MongoClient(this.url);
     this.dbName = process.env.MONGO_DB_NAME || "dev";
   }

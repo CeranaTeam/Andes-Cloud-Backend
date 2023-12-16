@@ -5,5 +5,6 @@ export interface User {
   email: string;
   point: number;
   password: string;
+  pointLog: any[];
 }
 
