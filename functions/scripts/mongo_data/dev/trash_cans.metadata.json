@@ -1,1 +1,1 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"37aeefc94ed2487d9beaa4907b409127","collectionName":"trash_cans","type":"collection"}
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"4b53241aa1bb4f798796981b681995cb","collectionName":"trash_cans","type":"collection"}
