@@ -44,11 +44,16 @@ class MongoImageDAO implements ImageDAO {
     const db = await this.getDb();
     const updateResult = await db.collection("images")
       .updateMany(
-        {trashCanId: trashCanId, isCollected: false},
+        {"trashCanId": trashCanId, "isCollected": false, "detectResult.label": {$ne: "garbage"}},
         {$set: {isCollected: true, userId: userId}, $inc: {point: 10}}
       );
 
-    if (updateResult.matchedCount === 0) {
+    const updateGarbageResult = await db.collection("images")
+      .updateMany(
+        {"trashCanId": trashCanId, "isCollected": false, "detectResult.label": "garbage"},
+        {$set: {isCollected: true, userId: userId}}
+      );
+    if (updateResult.matchedCount + updateGarbageResult.matchedCount === 0) {
       return [];
     }
 
@@ -58,7 +63,7 @@ class MongoImageDAO implements ImageDAO {
   public async getNotCollectedImagesByTrashCanId(trashCanId: string): Promise<Array<Image>> {
     const db = await this.getDb();
     const imageDocs = await db.collection("images")
-      .find({trashCanId: trashCanId, isCollected: false})
+      .find({"trashCanId": trashCanId, "isCollected": false})
       .toArray();
     return imageDocs.map((doc) => this.convertToImage(doc));
   }

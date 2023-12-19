@@ -76,13 +76,17 @@ class UserService {
     if (notCollectedImages.length === 0) {
       throw new ImageNotFoundError("沒有可以增加的點數");
     }
+
     const user = await this.userDAO.getUserById(userId);
     if (user === null) {
       throw new UnauthorizedError("查無此用戶");
     }
+
+    const garbageImages = notCollectedImages.filter((image) => image.detectResult.label === "garbage");
+    const recycleImagesLength = notCollectedImages.length - garbageImages.length;
     await this.imageDAO.collectImages(trashCanId, userId);
-    const newPoint = this.increase_point(notCollectedImages.length*10, userId);
-    this.appendPointLog(userId, notCollectedImages.length*10, "throw");
+    const newPoint = this.increase_point(recycleImagesLength*10, userId);
+    this.appendPointLog(userId, recycleImagesLength*10, "throw");
     return newPoint;
   }
 
