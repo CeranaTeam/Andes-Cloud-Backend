@@ -36,7 +36,8 @@ export class MongoTrashCanDAO implements TrashCanDAO {
     const trashCan = {
       id: trashCanDoc._id.toString(),
       name: trashCanDoc.name,
-      adminId: trashCanDoc.adminId.toString(),
+      adminId: trashCanDoc.adminId,
+      location: trashCanDoc.location,
     } as TrashCan;
     return trashCan;
   }
@@ -52,7 +53,8 @@ export class MongoTrashCanDAO implements TrashCanDAO {
     return {
       id: trashCanDoc._id.toString(),
       name: trashCanDoc.name,
-      adminId: trashCanDoc.adminId.toString(),
+      adminId: trashCanDoc.adminId,
+      location: trashCanDoc.location,
     } as TrashCan;
   }
 
@@ -67,6 +69,7 @@ export class MongoTrashCanDAO implements TrashCanDAO {
       name: trashCan.name,
       adminId: trashCan.adminId.toString(),
       imageUrl: trashCan.imageUrl,
+      location: trashCan.location,
     } as TrashCan));
   }
 }
