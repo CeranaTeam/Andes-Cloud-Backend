@@ -76,15 +76,19 @@ class UserService {
     if (notCollectedImages.length === 0) {
       throw new ImageNotFoundError("沒有可以增加的點數");
     }
+    const user = await this.userDAO.getUserById(userId);
+    if (user === null) {
+      throw new UnauthorizedError("查無此用戶");
+    }
     await this.imageDAO.collectImages(trashCanId, userId);
-    const newPoint = this.increase_point(notCollectedImages.length, userId);
-    this.appendPointLog(userId, notCollectedImages.length, "throw");
+    const newPoint = this.increase_point(notCollectedImages.length*10, userId);
+    this.appendPointLog(userId, notCollectedImages.length*10, "throw");
     return newPoint;
   }
 
   public increase_point_by_labelling(uid: string) {
-    this.increase_point(2, uid);
-    this.appendPointLog(uid, 2, "label");
+    this.increase_point(5, uid);
+    this.appendPointLog(uid, 5, "label");
   }
 
   private async increase_point(point: number, userId: string) {

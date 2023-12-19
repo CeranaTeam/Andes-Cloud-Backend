@@ -25,9 +25,11 @@ export default class TrashCanService {
     const image: Image = {
       detectResult: {"label": detectResultDTO.detectResult},
       labelResult: {"label": ""},
+      point: 0,
       imageUrl: imageUrl,
       isCollected: false,
       trashCanId: trashCanData.id,
+      trashCanLocation: trashCanData.location,
       userId: "",
       createdAt: Date.now(),
     };

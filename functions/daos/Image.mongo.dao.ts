@@ -45,7 +45,7 @@ class MongoImageDAO implements ImageDAO {
     const updateResult = await db.collection("images")
       .updateMany(
         {trashCanId: trashCanId, isCollected: false},
-        {$set: {isCollected: true, userId: userId}}
+        {$set: {isCollected: true, userId: userId}, $inc: {point: 10}}
       );
 
     if (updateResult.matchedCount === 0) {
@@ -68,7 +68,7 @@ class MongoImageDAO implements ImageDAO {
     const updateResult = await db.collection("images")
       .updateOne(
         {_id: new ObjectId(imageId)},
-        {$set: {"labelResult.label": label}}
+        {$set: {"labelResult.label": label}, $inc: {point: 5}}
       );
 
     return updateResult.modifiedCount === 1;
