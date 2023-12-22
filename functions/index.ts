@@ -5,18 +5,19 @@ import router from "./routes";
 const app = express();
 app.use(bodyParser.json({limit: "10mb"}));
 const cors = _cors({
-  origin: [
-    // "https://ceranapos.ebg.tw",
-    // "https://ceranapos.web.app",
-    // "https://pos.cerana.tech",
-    // "https://ledger.cerana.tech",
-    // "https://ledger.v2.cerana.tech",
-    // "http://localhost:5173",
-    "http://localhost:5173",
-    /cerana\.tech$/,
-    /web\.app$/,
-    /ebg\.tw$/,
-  ],
+  origin: "*",
+  // origin: [
+  // "https://ceranapos.ebg.tw",
+  // "https://ceranapos.web.app",
+  // "https://pos.cerana.tech",
+  // "https://ledger.cerana.tech",
+  // "https://ledger.v2.cerana.tech",
+  // "http://localhost:5173",
+  // "http://localhost:5173",
+  // /cerana\.tech$/,
+  // /web\.app$/,
+  // /ebg\.tw$/,
+  // ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
   allowedHeaders: ["Content-Type", "Authorization"],
 });
