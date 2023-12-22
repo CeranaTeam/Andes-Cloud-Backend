@@ -44,13 +44,13 @@ class MongoImageDAO implements ImageDAO {
     const db = await this.getDb();
     const updateResult = await db.collection("images")
       .updateMany(
-        {"trashCanId": trashCanId, "isCollected": false, "detectResult.label": {$ne: "垃圾"}},
+        {"trashCanId": trashCanId, "isCollected": false, "detectResult.label": {$ne: "一般"}},
         {$set: {isCollected: true, userId: userId}, $inc: {point: 10}}
       );
 
     const updateGarbageResult = await db.collection("images")
       .updateMany(
-        {"trashCanId": trashCanId, "isCollected": false, "detectResult.label": "垃圾"},
+        {"trashCanId": trashCanId, "isCollected": false, "detectResult.label": "一般"},
         {$set: {isCollected: true, userId: userId}}
       );
     if (updateResult.matchedCount + updateGarbageResult.matchedCount === 0) {
