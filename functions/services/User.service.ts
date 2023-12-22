@@ -82,7 +82,7 @@ class UserService {
       throw new UnauthorizedError("查無此用戶");
     }
 
-    const garbageImages = notCollectedImages.filter((image) => image.detectResult.label === "garbage");
+    const garbageImages = notCollectedImages.filter((image) => image.detectResult.label === "垃圾");
     const recycleImagesLength = notCollectedImages.length - garbageImages.length;
     await this.imageDAO.collectImages(trashCanId, userId);
     const newPoint = this.increase_point(recycleImagesLength*10, userId);
