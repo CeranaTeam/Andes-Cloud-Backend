@@ -10,14 +10,15 @@ export class LocalStorageDAO {
   }
 
   public async uploadImage(base64Data: string, imageName: string): Promise<string> {
+    const imageFilePath = imageName.split("/")[1];
     const buffer = Buffer.from(base64Data, "base64");
-    const filePath = path.join(this.storagePath, imageName);
+    const filePath = path.join(this.storagePath, imageFilePath);
 
     try {
       fs.mkdirSync(this.storagePath, {recursive: true});
       fs.writeFileSync(filePath, buffer);
 
-      const url = `/static/images/${imageName}`;
+      const url = `/static/images/${imageFilePath}`;
       return url;
     } catch (error) {
       console.error(error);
